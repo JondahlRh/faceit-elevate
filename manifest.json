@@ -1,0 +1,13 @@
+{
+  "name": "FaceIt Elevate",
+  "description": "FaceIt Extension to improve User Experience",
+  "version": "1.0",
+  "manifest_version": 3,
+  "action": { "default_icon": "logo.png" },
+  "content_scripts": [
+    {
+      "js": ["index.js"],
+      "matches": ["https://www.faceit.com/de/cs2/room/*"]
+    }
+  ]
+}
