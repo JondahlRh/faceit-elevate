@@ -74,4 +74,10 @@ const editDom = () => {
     "Elo Gain / Loss made by Gamix";
 };
 
-setTimeout(editDom, 5000);
+const inital = () => {
+  const matchQuery = document.querySelector("#MATCHROOM-OVERVIEW");
+  if (!matchQuery) return setTimeout(inital, 1000);
+  editDom();
+};
+
+inital();
