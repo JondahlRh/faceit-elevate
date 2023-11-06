@@ -1,6 +1,10 @@
+const getEloNode = (node) =>
+  node.childNodes[0].childNodes[0].childNodes[0].childNodes[2].childNodes[0]
+    .childNodes[1].childNodes[0].childNodes[0];
+
 const filterTeamData = (nodes) => {
   const sumElo = nodes.reduce((total, currentNode) => {
-    return total + +currentNode.children[1].children[0].children[0].textContent;
+    return total + +currentNode.textContent;
   }, 0);
 
   const avgElo = Math.round((sumElo / nodes.length) * 10) / 10;
@@ -25,10 +29,18 @@ const addInfoNode = (parentNode) => {
 };
 
 const editDom = () => {
-  const querySelectElo = [...document.querySelectorAll(".sc-gDXjCt.kZeRJR")];
+  const teamLeftQuery = document.querySelector('[name="roster1"]');
+  const teamRightQuery = document.querySelector('[name="roster2"]');
 
-  const avgEloTeamLeft = filterTeamData(querySelectElo.slice(0, 5));
-  const avgEloTeamRight = filterTeamData(querySelectElo.slice(5));
+  const mappedTeamLeftQuery = Array.from(
+    teamLeftQuery.childNodes[0].childNodes
+  ).map(getEloNode);
+  const mappedTeamRightQuery = Array.from(
+    teamRightQuery.childNodes[0].childNodes
+  ).map(getEloNode);
+
+  const avgEloTeamLeft = filterTeamData(mappedTeamLeftQuery);
+  const avgEloTeamRight = filterTeamData(mappedTeamRightQuery);
 
   const dif = Math.abs(avgEloTeamLeft - avgEloTeamRight);
 
@@ -42,14 +54,20 @@ const editDom = () => {
     avgEloTeamLeft < avgEloTeamRight ? loss : gain
   );
 
-  const querySelectTeams = [
-    ...document.querySelectorAll(".sc-kgvGAC.fYkWRc.sc-jZqtKW.fYWcuv"),
-  ];
-  addEloNode(querySelectTeams[0].parentNode, avgEloTeamLeft, teamLeftGain);
-  addEloNode(querySelectTeams[1].parentNode, avgEloTeamRight, teamRightGain);
+  const matchQuery = document.querySelector("#MATCHROOM-OVERVIEW");
 
-  const querySelectInfo = document.querySelector(".sc-fwDRTc.fiNfPN");
-  addInfoNode(querySelectInfo);
+  const teamLeftHeaderQuery =
+    matchQuery.childNodes[0].childNodes[0].childNodes[1].childNodes[0]
+      .childNodes[0];
+  const teamRightHeaderQuery =
+    matchQuery.childNodes[0].childNodes[0].childNodes[1].childNodes[2]
+      .childNodes[0];
+
+  addEloNode(teamLeftHeaderQuery, avgEloTeamLeft, teamLeftGain);
+  addEloNode(teamRightHeaderQuery, avgEloTeamRight, teamRightGain);
+
+  matchQuery.childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes[0].textContent =
+    "Elo Gain / Loss made by Gamix";
 };
 
 setTimeout(editDom, 5000);
