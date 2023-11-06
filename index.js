@@ -29,8 +29,14 @@ const addInfoNode = (parentNode) => {
 };
 
 const editDom = () => {
+  const matchQuery = document.querySelector("#MATCHROOM-OVERVIEW");
+  if (!matchQuery) return;
+
   const teamLeftQuery = document.querySelector('[name="roster1"]');
+  if (!teamLeftQuery) return;
+
   const teamRightQuery = document.querySelector('[name="roster2"]');
+  if (!teamRightQuery) return;
 
   const mappedTeamLeftQuery = Array.from(
     teamLeftQuery.childNodes[0].childNodes
@@ -53,8 +59,6 @@ const editDom = () => {
   const teamRightGain = Math.round(
     avgEloTeamLeft < avgEloTeamRight ? loss : gain
   );
-
-  const matchQuery = document.querySelector("#MATCHROOM-OVERVIEW");
 
   const teamLeftHeaderQuery =
     matchQuery.childNodes[0].childNodes[0].childNodes[1].childNodes[0]
