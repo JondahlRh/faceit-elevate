@@ -81,3 +81,11 @@ const inital = () => {
 };
 
 inital();
+
+let prevHref = location.href;
+setInterval(() => {
+  if (location.href === prevHref) return;
+
+  prevHref = location.href;
+  editDom();
+}, 10000);
